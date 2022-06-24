@@ -1,0 +1,9 @@
+tensorflow==2.7
+tensorflow-addons
+sklearn
+tqdm
+pandas
+biopython
+snakemake
+pyyaml
+complexcgr
