@@ -2,7 +2,7 @@ import json
 import yaml
 import pandas as pd
 from pathlib import Path
-from src import DataSelector
+from src.data_selector import DataSelector
 
 print(">> train val test split <<")
 
@@ -11,7 +11,15 @@ with open("parameters.yaml") as fp:
     PARAMETERS = yaml.load(fp, Loader=yaml.FullLoader)
 
 KMER = PARAMETERS["KMER"]
-FOLDER_FCGR = Path(f"data/fcgr-{KMER}mers")
+
+# instantiate fcgr class
+if CANONICAL_KMERS is True:
+    FOLDER_FCGR = Path(f"data/fcgr-{KMER}mers-canonical")
+elif SPACED_KMERS is True:
+    FOLDER_FCGR = Path(f"data/fcgr-{KMER}mers-spaced")
+else:
+    FOLDER_FCGR = Path(f"data/fcgr-{KMER}mers")
+
 PATH_LABELS = Path(PARAMETERS["PATH_LABELS"])
 LABELS_TO_USE = PARAMETERS["LABELS_TO_USE"]
 LIST_FCGR   = list(FOLDER_FCGR.rglob("*npy"))
@@ -30,7 +38,7 @@ df_labels = pd.read_csv(PATH_LABELS)
 df_labels.drop_duplicates("SRR_ID", inplace=True)
 col_label = "Clade" if LABELS_TO_USE=="GISAID" else "PANGO_LINEAGE"
 dict_labels = {sra_id: label for sra_id,label in zip(df_labels["SRR_ID"], df_labels[col_label])}
-labels    = [dict_labels[path.parent.stem] for path in LIST_FCGR]
+labels    = [dict_labels[path.stem] for path in LIST_FCGR]
 
 # Instantiate DataSelector
 ds = DataSelector(id_labels, labels)

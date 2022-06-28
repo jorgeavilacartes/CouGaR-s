@@ -1,14 +1,23 @@
 # General
 KMER: 6
-CANONICAL_KMERS: True
 LABELS_TO_USE: "GISAID" # Options: "GISAID", "Pango"
 
+# --- FCGR ---
+# priority CANONICAL_KMERS > SPACED_KMERS > FCGR
+# if both CANONICAL_KMERS and SPACED_KMERS are set to False, FCGR will be generated 
+# considering all kmers
+CANONICAL_KMERS: True
+
+# spaced-kmers will be used only if CANONICAL_KMERS is set to False
+SPACED_KMERS: False # if True, PATH_KMER_COUNT must have larger kmers than KMER (of length equal to the SPACED_PATTERN string)
+SPACED_PATTERN: "##-###--#" # used if SPACED_KMER is True, "#": match character, "-": ommited character
+
 # INPUT DATA
-PATH_KMER_COUNT: ""
-PATH_LABELS: ""
+PATH_KMER_COUNT: "/home/jorge/samples-sars-cov2/6mers"
+PATH_LABELS: "/home/jorge/samples-sars-cov2/srrgis.clade.csv"
 
 # MODEL
-EMBEDDING_SIZE: 100
+EMBEDDING_SIZE: 100 # output of trained model
 TRAIN_SIZE: 0.8 # size for val and test sets: (1-TRAIN_SIZE)/2
 BATCH_SIZE: 16
 EPOCHS: 50

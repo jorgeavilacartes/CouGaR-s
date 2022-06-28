@@ -5,7 +5,7 @@ import tensorflow as tf
 import tensorflow_addons as tfa
 
 from src.model_loader import ModelLoader
-from src.model_loader import DataGenerator    
+from src.data_generator import DataGenerator    
 from src.callbacks import CSVTimeHistory
 from src.pipeline import Pipeline
 
@@ -22,7 +22,7 @@ EMBEDDING_SIZE = PARAMETERS["EMBEDDING_SIZE"]
 # Train parameters
 BATCH_SIZE = PARAMETERS["BATCH_SIZE"]
 EPOCHS     = PARAMETERS["EPOCHS"]
-WEIGHTS    = PARAMETERS["WEIGHTS"]
+WEIGHTS    = PARAMETERS["WEIGHTS_PATH"]
 PREPROCESSING = PARAMETERS["PREPROCESSING"]
 PATIENTE_EARLY_STOPPING = PARAMETERS["PATIENTE_EARLY_STOPPING"]
 PATIENTE_EARLY_LR = PARAMETERS["PATIENTE_REDUCE_LR"]
@@ -31,10 +31,10 @@ PATIENTE_EARLY_LR = PARAMETERS["PATIENTE_REDUCE_LR"]
 loader = ModelLoader()
 model  = loader(
     k=KMER,
-    embeddings=EMBEDDING_SIZE,
+    embedding_size=EMBEDDING_SIZE,
     model_name="cnn_kmers",
     weights_path=WEIGHTS,
-    ) 
+    )
 
 model.compile(optimizer=tf.keras.optimizers.Adam(),
             loss=tfa.losses.TripletSemiHardLoss()

@@ -6,11 +6,11 @@ from pathlib import Path
 from typing import Optional
 
 OMMIT = {".ipynb_checkpoints","__pycache__","__init__","custom_layers","custom_losses"} # files to be ommited
-BASE_DIR = Path(__file__).resolve().parent # base directory unsupervised-dna
+BASE_DIR = Path(__file__).resolve().parent # base directory 
 BASE_MODELS = BASE_DIR.joinpath("models") # models directory
 
 class ModelLoader:
-    "Load models for unsupervised learning using FCGR (grayscale images)"
+    "Load models "
 
     AVAILABLE_MODELS = [model[:-3] for model in os.listdir(BASE_MODELS) if all([ommit not in model for ommit in OMMIT])]
 
@@ -20,7 +20,7 @@ class ModelLoader:
         # Call class of model to load
         get_model = getattr(
             importlib.import_module(
-                f"similarity_learning_dna.models.{model_name}"
+                f"src.models.{model_name}"
             ),
             "get_model")        
         

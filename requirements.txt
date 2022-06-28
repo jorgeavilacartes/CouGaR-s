@@ -1,4 +1,4 @@
-tensorflow==2.7
+tensorflow
 tensorflow-addons
 sklearn
 tqdm
@@ -6,4 +6,4 @@ pandas
 biopython
 snakemake
 pyyaml
-complexcgr
+complexcgr==0.7.4
