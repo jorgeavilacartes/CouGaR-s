@@ -3,7 +3,7 @@ KMER: 6
 LABELS_TO_USE: "GISAID" # Options: "GISAID", "Pango"
 
 # --- FCGR ---
-# priority CANONICAL_KMERS > SPACED_KMERS > FCGR
+# priority CANONICAL_KMERS > SPACED_KMERS > ALL KMERS
 # if both CANONICAL_KMERS and SPACED_KMERS are set to False, FCGR will be generated 
 # considering all kmers
 CANONICAL_KMERS: True
