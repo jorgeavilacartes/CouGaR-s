@@ -11,6 +11,8 @@ with open("parameters.yaml") as fp:
     PARAMETERS = yaml.load(fp, Loader=yaml.FullLoader)
 
 KMER = PARAMETERS["KMER"]
+CANONICAL_KMERS = PARAMETERS["CANONICAL_KMERS"]
+SPACED_KMERS = PARAMETERS["SPACED_KMERS"]
 
 # instantiate fcgr class
 if CANONICAL_KMERS is True:
@@ -34,7 +36,7 @@ sra_id  = [path.stem for path in LIST_FCGR] # SRA_ID to get labels
 id_labels = [str(path) for path in LIST_FCGR] # path to fcgr
 
 # labels
-df_labels = pd.read_csv(PATH_LABELS)
+df_labels = pd.read_csv(PATH_LABELS, sep="\t")
 df_labels.drop_duplicates("SRR_ID", inplace=True)
 col_label = "Clade" if LABELS_TO_USE=="GISAID" else "PANGO_LINEAGE"
 dict_labels = {sra_id: label for sra_id,label in zip(df_labels["SRR_ID"], df_labels[col_label])}

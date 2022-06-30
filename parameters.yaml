@@ -14,7 +14,7 @@ SPACED_PATTERN: "##-###--#" # used if SPACED_KMER is True, "#": match character,
 
 # INPUT DATA
 PATH_KMER_COUNT: "/home/jorge/samples-sars-cov2/6mers"
-PATH_LABELS: "/home/jorge/samples-sars-cov2/srrgis.clade.csv"
+PATH_LABELS: "data/clean_labels.tsv" #"/home/jorge/samples-sars-cov2/srrgis.clade.csv"
 
 # MODEL
 EMBEDDING_SIZE: 100 # output of trained model

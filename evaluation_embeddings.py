@@ -69,4 +69,7 @@ for d in np.linspace(1e-10, 0.1, 10):
         Metrics(d, P_same_size, P_diff_size, TA_size, FA_size, VAL, FAR)
     )
 
-pd.DataFrame(metrics).to_csv("data/test/eval-embeddings.tsv",sep="\t")
+pd.DataFrame(metrics).to_csv("data/test/metrics_embeddings.tsv",sep="\t")
+
+with open("data/test/embeddings_pair_distance.json", "w") as fp: 
+    json.dump(D, fp)
