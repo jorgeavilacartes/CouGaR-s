@@ -3,7 +3,7 @@ from tqdm import tqdm
 import numpy as np 
 from pathlib import Path
 from src.canonical_fcgr import FCGRKmc
-from src.spaced_kmer import FCGRSpacedKmer
+from src.spaced_fcgr import FCGRSpacedKmer
 
 # Load parameters
 with open("parameters.yaml") as fp: 

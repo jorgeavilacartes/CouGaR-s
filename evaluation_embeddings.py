@@ -12,12 +12,14 @@ from tqdm import tqdm
 PATH_TEST = Path("data/test")
 
 # load embeddings
-embeddings = pd.read_csv(PATH_TEST.joinpath("embeddings.tsv"), sep="\t", header=None)
+embeddings = pd.read_csv(PATH_TEST.joinpath("embeddings-test.tsv"), sep="\t", header=None)
 embeddings = embeddings.to_numpy()
 
 # load labels
-labels = pd.read_csv(PATH_TEST.joinpath("metadata.tsv"),header=None)
-labels = labels[0].tolist()
+with open("data/train/labels.json","r") as f:
+    set_labels = json.load(f)
+# labels = pd.read_csv(PATH_TEST.joinpath("metadata.tsv"),header=None)
+labels = set_labels["test"] #labels[0].tolist()
 
 ## compute L2 distances D(xi,xj)
 N_embeddings = embeddings.shape[0]
@@ -69,7 +71,9 @@ for d in np.linspace(1e-10, 0.1, 10):
         Metrics(d, P_same_size, P_diff_size, TA_size, FA_size, VAL, FAR)
     )
 
-pd.DataFrame(metrics).to_csv("data/test/metrics_embeddings.tsv",sep="\t")
+pd.DataFrame(metrics).to_csv("data/test/metrics-embeddings-test.tsv",sep="\t")
 
-with open("data/test/embeddings_pair_distance.json", "w") as fp: 
+# keys as strings to save
+D = {str(k): v for k,v in D.items()}
+with open("data/test/pair-distance-embeddings-test.json", "w") as fp: 
     json.dump(D, fp)

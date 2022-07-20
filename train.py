@@ -1,6 +1,7 @@
 import yaml
 import json
 from pathlib import Path
+import numpy as np
 import tensorflow as tf
 import tensorflow_addons as tfa
 
@@ -8,6 +9,7 @@ from src.model_loader import ModelLoader
 from src.data_generator import DataGenerator    
 from src.callbacks import CSVTimeHistory
 from src.pipeline import Pipeline
+
 
 # Load parameters
 with open("parameters.yaml") as fp: 
@@ -26,6 +28,12 @@ WEIGHTS    = PARAMETERS["WEIGHTS_PATH"]
 PREPROCESSING = PARAMETERS["PREPROCESSING"]
 PATIENTE_EARLY_STOPPING = PARAMETERS["PATIENTE_EARLY_STOPPING"]
 PATIENTE_EARLY_LR = PARAMETERS["PATIENTE_REDUCE_LR"]
+
+SEED = PARAMETERS["SEED"]
+
+# set seed for reproducibility
+tf.random.set_seed(SEED)
+np.random.seed(SEED)
 
 # -1- Model selection
 loader = ModelLoader()

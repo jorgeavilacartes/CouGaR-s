@@ -45,7 +45,7 @@ knn = KNeighborsClassifier(n_neighbors=3)
 knn.fit(X_train, y_train)
 
 # Save trained model
-PATH_CLUSTERING = Path("data/clustering")
+PATH_CLUSTERING = Path("data/knn")
 PATH_CLUSTERING.mkdir(parents=True, exist_ok=True)
 with open(PATH_CLUSTERING.joinpath("knn.pkl"),"wb") as fp: 
     pickle.dump(knn, fp)
@@ -83,4 +83,4 @@ for j,label in enumerate(ORDER_OUTPUT):
     )
 
 df_metrics = pd.DataFrame(list_metrics)
-df_metrics.to_csv("data/clustering/metrics.csv")
+df_metrics.to_csv(PATH_CLUSTERING.joinpath("metrics.csv"))

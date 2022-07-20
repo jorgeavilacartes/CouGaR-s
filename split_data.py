@@ -1,5 +1,7 @@
+from collections import defaultdict
 import json
 import yaml
+import numpy as np
 import pandas as pd
 from pathlib import Path
 from src.data_selector import DataSelector
@@ -13,8 +15,12 @@ with open("parameters.yaml") as fp:
 KMER = PARAMETERS["KMER"]
 CANONICAL_KMERS = PARAMETERS["CANONICAL_KMERS"]
 SPACED_KMERS = PARAMETERS["SPACED_KMERS"]
+MIN_SAMPLES_LABEL = PARAMETERS["MIN_SAMPLES_LABEL"]
+MAX_SAMPLES_LABEL = PARAMETERS["MAX_SAMPLES_LABEL"]
+SEED = PARAMETERS["SEED"]
 
-# instantiate fcgr class
+
+# folder with fcgr
 if CANONICAL_KMERS is True:
     FOLDER_FCGR = Path(f"data/fcgr-{KMER}mers-canonical")
 elif SPACED_KMERS is True:
@@ -33,17 +39,37 @@ PATH_SAVE.mkdir(exist_ok=True, parents=True)
 ## Input for DataSelector
 # sra-id
 sra_id  = [path.stem for path in LIST_FCGR] # SRA_ID to get labels
-id_labels = [str(path) for path in LIST_FCGR] # path to fcgr
 
 # labels
 df_labels = pd.read_csv(PATH_LABELS, sep="\t")
-df_labels.drop_duplicates("SRR_ID", inplace=True)
+# df_labels.drop_duplicates("SRR_ID", inplace=True)
+
+# consider only lables with representativity >= MIN_SAMPLE_LABEL 
 col_label = "Clade" if LABELS_TO_USE=="GISAID" else "PANGO_LINEAGE"
+label_dist = df_labels.groupby(col_label).size()
+admisible_labels = label_dist[label_dist >= MIN_SAMPLES_LABEL].index
 dict_labels = {sra_id: label for sra_id,label in zip(df_labels["SRR_ID"], df_labels[col_label])}
-labels    = [dict_labels[path.stem] for path in LIST_FCGR]
+
+# select (filtered by frequency) SRR_ID and labels
+count_by_label = defaultdict(int)
+id_labels = []
+labels    = []
+for path in LIST_FCGR:
+    label = dict_labels.get(path.stem)
+
+    # check if label has enough representativity MIN_SAMPLES_LABEL
+    if label in admisible_labels:
+
+        # include sample if and only if not exceed MAX_SAMPLES_LABEL
+        if count_by_label.get(label,0) < MAX_SAMPLES_LABEL:
+            id_labels.append(str(path)) # path to fcgr
+            labels.append(label)
+            
+            # update count label
+            count_by_label[label] += 1
 
 # Instantiate DataSelector
-ds = DataSelector(id_labels, labels)
+ds = DataSelector(id_labels, labels, seed=SEED)
 
 # Get train, test and val sets
 ds(train_size=TRAIN_SIZE, balanced_on=labels)

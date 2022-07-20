@@ -1,6 +1,8 @@
 # General
 KMER: 6
 LABELS_TO_USE: "GISAID" # Options: "GISAID", "Pango"
+MIN_SAMPLES_LABEL: 1000 # minimum samples per label
+MAX_SAMPLES_LABEL: 100_000
 
 # --- FCGR ---
 # priority CANONICAL_KMERS > SPACED_KMERS > ALL KMERS
@@ -19,14 +21,14 @@ PATH_LABELS: "data/clean_labels.tsv" #"/home/jorge/samples-sars-cov2/srrgis.clad
 # MODEL
 EMBEDDING_SIZE: 100 # output of trained model
 TRAIN_SIZE: 0.8 # size for val and test sets: (1-TRAIN_SIZE)/2
-BATCH_SIZE: 16
-EPOCHS: 50
+BATCH_SIZE: 128
+EPOCHS: 200
 PREPROCESSING: {"divide_by_max": {}} # ("name_function", dict_kwargs)
-WEIGHTS_PATH: null
+WEIGHTS_PATH: null #/home/jorge/CouGaR-s/data/train/checkpoints/weights-36-0.062.hdf5 # null
 
 # REPRODUCIBILITY
 SEED: 42
 
 # callbacks early stopping
-PATIENTE_EARLY_STOPPING: 20 # stop training after N epochs without improvement
-PATIENTE_REDUCE_LR: 15 # reduce learning rate after N epochs without improvement
+PATIENTE_EARLY_STOPPING: 50 # stop training after N epochs without improvement
+PATIENTE_REDUCE_LR: 30 # reduce learning rate after N epochs without improvement
